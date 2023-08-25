@@ -1,6 +1,7 @@
 import 'package:bloc_to_do_app/1_domain/entities/unique_id.dart';
 import 'package:bloc_to_do_app/2_application/app/pages/components/detail/detail_page.dart';
 import 'package:bloc_to_do_app/2_application/app/pages/create_todo_collection/create_todo_collection_page.dart';
+import 'package:bloc_to_do_app/2_application/app/pages/create_todo_entry/create_todo_entry_page.dart';
 import 'package:bloc_to_do_app/2_application/app/pages/dashboard/dashboard_page.dart';
 import 'package:bloc_to_do_app/2_application/app/pages/home/bloc/navigation_cubit.dart';
 import 'package:bloc_to_do_app/2_application/app/pages/home/home_page.dart';
@@ -50,28 +51,50 @@ final routes = GoRouter(
     GoRoute(
       name: CreateToDoCollectionPage.pageConfig.name,
       path: '$_basePath/overview/${CreateToDoCollectionPage.pageConfig.name}',
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: BackButton(
-              onPressed: () {
-                if (context.canPop()) {
-                  context.pop();
-                } else {
-                  context.goNamed(
-                    HomePage.pageConfig.name,
-                    pathParameters: {'tab': CreateToDoCollectionPage.pageConfig.name},
-                  );
-                }
-              },
-            ),
-            title: Text('create to do collection'),
+      builder: (context, state) => Scaffold(
+        appBar: AppBar(
+          title: const Text('create collection'),
+          leading: BackButton(
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.goNamed(
+                  HomePage.pageConfig.name,
+                  pathParameters: {'tab': OverviewPage.pageConfig.name},
+                );
+              }
+            },
           ),
-          body: SafeArea(
-            child: CreateToDoCollectionPage.pageConfig.child,
+        ),
+        body: SafeArea(
+          child: CreateToDoCollectionPage.pageConfig.child,
+        ),
+      ),
+    ),
+    GoRoute(
+      name: CreateToDoEntryPage.pageConfig.name,
+      path: '$_basePath/overview/${CreateToDoEntryPage.pageConfig.name}',
+      builder: (context, state) => Scaffold(
+        appBar: AppBar(
+          title: const Text('create to do entry'),
+          leading: BackButton(
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.goNamed(
+                  HomePage.pageConfig.name,
+                  pathParameters: {'tab': OverviewPage.pageConfig.name},
+                );
+              }
+            },
           ),
-        );
-      },
+        ),
+        body: SafeArea(
+          child: CreateToDoEntryPage.pageConfig.child,
+        ),
+      ),
     ),
     GoRoute(
       name: ToDoDetailPage.pageConfig.name,

@@ -50,7 +50,7 @@ class ToDoRepositoryMock implements ToDoRepository {
       );
 
       return Future.delayed(
-        const Duration(milliseconds: 100),
+        const Duration(milliseconds: 250),
         () => Right(selectedEntryItem),
       );
     } on Exception catch (e) {
@@ -93,8 +93,14 @@ class ToDoRepositoryMock implements ToDoRepository {
     toDoCollections.add(collection);
 
     return Future.delayed(
-      const Duration(milliseconds: 100),
-      () => Right(true),
+      const Duration(milliseconds: 250),
+      () => const Right(true),
     );
+  }
+
+  @override
+  Future<Either<Failure, bool>> createToDoEntry(ToDoEntry entry) {
+    toDoEntries.add(entry);
+    return Future.delayed(const Duration(milliseconds: 250), () => const Right(true));
   }
 }

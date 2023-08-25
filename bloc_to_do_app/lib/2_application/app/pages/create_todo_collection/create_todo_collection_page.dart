@@ -27,8 +27,8 @@ class CreateToDoCollectionPage extends StatefulWidget {
   const CreateToDoCollectionPage({super.key});
 
   static const pageConfig = PageConfig(
-    icon: Icons.create,
     name: 'create_todo_collection',
+    icon: Icons.add_task_rounded,
     child: CreateToDoCollectionPageProvider(),
   );
 
@@ -66,15 +66,15 @@ class _CreateToDoCollectionPageState extends State<CreateToDoCollectionPage> {
               ),
               onChanged: (value) => cubit.colorChanged(value),
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'please enter a number';
-                }
-                if (value.isNotEmpty) {
-                  final parsedColor = int.tryParse(value);
-                  if (parsedColor == null || parsedColor < 0 || parsedColor > ToDoColor.predefinedColors.length) {
-                    return 'only numbers between 0 and ${ToDoColor.predefinedColors.length - 1} are optional';
+                if (value != null && value.isNotEmpty) {
+                  final parsedColorIndex = int.tryParse(value);
+                  if (parsedColorIndex == null ||
+                      parsedColorIndex < 0 ||
+                      parsedColorIndex > ToDoColor.predefinedColors.length) {
+                    return 'Only numbers between 0 and ${ToDoColor.predefinedColors.length - 1} are allowed';
                   }
                 }
+                return null;
               },
             ),
             const SizedBox(
