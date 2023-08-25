@@ -28,13 +28,10 @@ class ToDoRepositoryMock implements ToDoRepository {
   );
 
   @override
-  Future<Either<Failure, List<ToDoCollection>>> readToDoCollections() async {
-    if (toDoCollections.isNotEmpty) {
-      return Right(toDoCollections);
-    }
+  Future<Either<Failure, List<ToDoCollection>>> readToDoCollections() {
     try {
       return Future.delayed(
-        const Duration(milliseconds: 500),
+        const Duration(milliseconds: 200),
         () => Right(toDoCollections),
       );
     } on Exception catch (e) {
@@ -50,7 +47,7 @@ class ToDoRepositoryMock implements ToDoRepository {
       );
 
       return Future.delayed(
-        const Duration(milliseconds: 250),
+        const Duration(milliseconds: 200),
         () => Right(selectedEntryItem),
       );
     } on Exception catch (e) {
@@ -62,7 +59,10 @@ class ToDoRepositoryMock implements ToDoRepository {
   Future<Either<Failure, List<EntryId>>> readToDoEntryIds(CollectionId collectionId) {
     try {
       final startIndex = int.parse(collectionId.value) * 10;
-      final endIndex = startIndex + 10;
+      int endIndex = startIndex + 10;
+      if (toDoEntries.length < endIndex) {
+        endIndex = toDoEntries.length;
+      }
       final entryIds = toDoEntries.sublist(startIndex, endIndex).map((entry) => entry.id).toList();
 
       return Future.delayed(
@@ -78,24 +78,21 @@ class ToDoRepositoryMock implements ToDoRepository {
   Future<Either<Failure, ToDoEntry>> updateToDoEntry({required CollectionId collectionId, required EntryId entryId}) {
     final index = toDoEntries.indexWhere((element) => element.id == entryId);
     final entryToUpdate = toDoEntries[index];
-    final updatedEntry = entryToUpdate.copyWith(isDone: !entryToUpdate.isDone);
-
+    final updatedEntry = toDoEntries[index].copyWith(isDone: !entryToUpdate.isDone);
     toDoEntries[index] = updatedEntry;
 
-    return Future.delayed(
-      const Duration(milliseconds: 100),
-      () => Right(updatedEntry),
-    );
+    return Future.delayed(const Duration(milliseconds: 100), () => Right(updatedEntry));
   }
 
   @override
-  Future<Either<Failure, bool>> createToDoCollection({required ToDoCollection collection}) {
-    toDoCollections.add(collection);
-
-    return Future.delayed(
-      const Duration(milliseconds: 250),
-      () => const Right(true),
+  Future<Either<Failure, bool>> createToDoCollection(ToDoCollection collection) {
+    final collectionToAdd = ToDoCollection(
+      id: CollectionId.fromUniqueString(toDoCollections.length.toString()),
+      title: collection.title,
+      color: collection.color,
     );
+    toDoCollections.add(collectionToAdd);
+    return Future.delayed(const Duration(milliseconds: 100), () => const Right(true));
   }
 
   @override

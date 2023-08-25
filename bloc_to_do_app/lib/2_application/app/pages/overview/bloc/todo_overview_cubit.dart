@@ -12,7 +12,7 @@ class ToDoOverviewCubit extends Cubit<ToDoOverviewCubitState> {
   ToDoOverviewCubit({
     required this.loadToDoCollections,
     ToDoOverviewCubitState? initialState,
-  }) : super(initialState ?? ToDoOverviewCubitLoadingState()) {}
+  }) : super(initialState ?? ToDoOverviewCubitLoadingState());
 
   Future<void> readToDoCollections() async {
     emit(ToDoOverviewCubitLoadingState());

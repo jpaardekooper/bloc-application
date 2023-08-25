@@ -23,7 +23,7 @@ class CreateTodoCollectionCubit extends Cubit<CreateTodoCollectionState> {
   Future<void> submit() async {
     final parsedColorIndex = int.tryParse(state.color ?? '') ?? 0;
     await createToDoCollection.call(
-      ToDoCollectionParam(
+      ToDoCollectionParams(
         collection: ToDoCollection.empty().copyWith(
           title: state.title,
           color: ToDoColor(colorIndex: parsedColorIndex),

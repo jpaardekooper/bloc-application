@@ -40,8 +40,8 @@ class CollectionIdParam extends Params {
   List<Object> get props => [collectionId];
 }
 
-class ToDoCollectionParam extends Params {
-  ToDoCollectionParam({
+class ToDoCollectionParams extends Params {
+  ToDoCollectionParams({
     required this.collection,
   }) : super();
 

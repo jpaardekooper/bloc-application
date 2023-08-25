@@ -22,10 +22,10 @@ class ToDoOverviewLoaded extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'create_todo_collection',
+        key: const Key('create_todo_collection'),
         onPressed: () => context.pushNamed(CreateToDoCollectionPage.pageConfig.name),
-        child: Icon(
-          Icons.add,
-        ),
+        child: const Icon(Icons.add),
       ),
       body: ListView.builder(
         itemCount: collections.length,

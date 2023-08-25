@@ -3,7 +3,6 @@ import 'package:bloc_to_do_app/1_domain/failures/failures.dart';
 import 'package:bloc_to_do_app/1_domain/repositories/todo_repository.dart';
 import 'package:bloc_to_do_app/3_core/use_case.dart';
 import 'package:either_dart/either.dart';
-import 'package:either_dart/src/either.dart';
 
 class UpdateToDoEntry implements UseCase<ToDoEntry, ToDoEntryIdsParam> {
   final ToDoRepository toDoRepository;

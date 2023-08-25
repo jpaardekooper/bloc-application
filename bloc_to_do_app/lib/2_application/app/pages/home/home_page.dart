@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
                 key: const Key('primary-navigation-medium'),
                 builder: (context) => AdaptiveScaffold.standardNavigationRail(
                   leading: ElevatedButton.icon(
+                    key: const Key('create_todo_collection_home'),
                     onPressed: () {
                       context.pushNamed(CreateToDoCollectionPage.pageConfig.name);
                     },

@@ -1,11 +1,20 @@
 import 'package:bloc_to_do_app/1_domain/entities/todo_color.dart';
+import 'package:bloc_to_do_app/1_domain/entities/unique_id.dart';
 import 'package:bloc_to_do_app/1_domain/repositories/todo_repository.dart';
 import 'package:bloc_to_do_app/1_domain/user_cases/create_todo_collection.dart';
 import 'package:bloc_to_do_app/2_application/app/pages/create_todo_collection/bloc/create_todo_collection_cubit.dart';
+import 'package:bloc_to_do_app/2_application/app/pages/create_todo_entry/create_todo_entry_page.dart';
 import 'package:bloc_to_do_app/2_application/core/page_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+class CreateToDoEntryPageExtra {
+  final CollectionId collectionId;
+  final ToDoEntryItemAddedCallBack toDoEntryItemAddedCallBack;
+
+  const CreateToDoEntryPageExtra({required this.collectionId, required this.toDoEntryItemAddedCallBack});
+}
 
 class CreateToDoCollectionPageProvider extends StatelessWidget {
   const CreateToDoCollectionPageProvider({super.key});
@@ -41,7 +50,6 @@ class _CreateToDoCollectionPageState extends State<CreateToDoCollectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<CreateTodoCollectionCubit>();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Form(
@@ -52,7 +60,7 @@ class _CreateToDoCollectionPageState extends State<CreateToDoCollectionPage> {
               decoration: const InputDecoration(
                 labelText: 'Title',
               ),
-              onChanged: (value) => cubit.titleChanged(value),
+              onChanged: (value) => context.read<CreateTodoCollectionCubit>().titleChanged(value),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a title';
@@ -64,7 +72,7 @@ class _CreateToDoCollectionPageState extends State<CreateToDoCollectionPage> {
               decoration: const InputDecoration(
                 labelText: 'Color',
               ),
-              onChanged: (value) => cubit.colorChanged(value),
+              onChanged: (value) => context.read<CreateTodoCollectionCubit>().colorChanged(value),
               validator: (value) {
                 if (value != null && value.isNotEmpty) {
                   final parsedColorIndex = int.tryParse(value);
@@ -85,7 +93,7 @@ class _CreateToDoCollectionPageState extends State<CreateToDoCollectionPage> {
                 final isFormValid = _formKey.currentState?.validate();
 
                 if (isFormValid == true) {
-                  cubit.submit();
+                  context.read<CreateTodoCollectionCubit>().submit();
                   context.pop();
                 }
               },
