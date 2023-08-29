@@ -1,10 +1,10 @@
+import 'package:either_dart/either.dart';
 import 'package:bloc_to_do_app/1_domain/entities/todo_collection.dart';
 import 'package:bloc_to_do_app/1_domain/entities/todo_color.dart';
 import 'package:bloc_to_do_app/1_domain/entities/todo_entry.dart';
 import 'package:bloc_to_do_app/1_domain/entities/unique_id.dart';
 import 'package:bloc_to_do_app/1_domain/failures/failures.dart';
 import 'package:bloc_to_do_app/1_domain/repositories/todo_repository.dart';
-import 'package:either_dart/either.dart';
 
 class ToDoRepositoryMock implements ToDoRepository {
   final List<ToDoEntry> toDoEntries = List.generate(
@@ -63,7 +63,11 @@ class ToDoRepositoryMock implements ToDoRepository {
       if (toDoEntries.length < endIndex) {
         endIndex = toDoEntries.length;
       }
-      final entryIds = toDoEntries.sublist(startIndex, endIndex).map((entry) => entry.id).toList();
+      List<EntryId> entryIds = [];
+
+      if (startIndex < toDoEntries.length) {
+        entryIds = toDoEntries.sublist(startIndex, endIndex).map((entry) => entry.id).toList();
+      }
 
       return Future.delayed(
         const Duration(milliseconds: 300),
@@ -96,7 +100,7 @@ class ToDoRepositoryMock implements ToDoRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> createToDoEntry(ToDoEntry entry) {
+  Future<Either<Failure, bool>> createToDoEntry(_, ToDoEntry entry) {
     toDoEntries.add(entry);
     return Future.delayed(const Duration(milliseconds: 250), () => const Right(true));
   }

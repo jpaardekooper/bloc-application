@@ -1,14 +1,15 @@
-import 'package:bloc_to_do_app/1_domain/entities/unique_id.dart';
-import 'package:bloc_to_do_app/2_application/app/pages/components/detail/detail_page.dart';
-import 'package:bloc_to_do_app/2_application/app/pages/create_todo_collection/create_todo_collection_page.dart';
-import 'package:bloc_to_do_app/2_application/app/pages/create_todo_entry/create_todo_entry_page.dart';
-import 'package:bloc_to_do_app/2_application/app/pages/dashboard/dashboard_page.dart';
-import 'package:bloc_to_do_app/2_application/app/pages/home/home_page.dart';
-import 'package:bloc_to_do_app/2_application/app/pages/overview/overview_page.dart';
-import 'package:bloc_to_do_app/2_application/app/pages/settings/settings_page.dart';
-import 'package:bloc_to_do_app/2_application/core/go_router_observer.dart';
+import 'package:bloc_to_do_app/2_application/signin/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bloc_to_do_app/1_domain/entities/unique_id.dart';
+import 'package:bloc_to_do_app/2_application/core/go_router_observer.dart';
+import 'package:bloc_to_do_app/2_application/pages/create_todo_collection/create_todo_collection_page.dart';
+import 'package:bloc_to_do_app/2_application/pages/create_todo_entry/create_todo_entry_page.dart';
+import 'package:bloc_to_do_app/2_application/pages/dashboard/dashboard_page.dart';
+import 'package:bloc_to_do_app/2_application/pages/detail/todo_detail_page.dart';
+import 'package:bloc_to_do_app/2_application/pages/home/home_page.dart';
+import 'package:bloc_to_do_app/2_application/pages/overview/overview_page.dart';
+import 'package:bloc_to_do_app/2_application/pages/settings/settings_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
@@ -17,9 +18,16 @@ const String _basePath = '/home';
 
 final routes = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '$_basePath/${DashboardPage.pageConfig.name}',
+  initialLocation: '$_basePath/${DasboardPage.pageConfig.name}',
   observers: [GoRouterObserver()],
   routes: [
+    GoRoute(
+      name: SignInScreen.pageConfig.name,
+      path: '$_basePath/${SignInScreen.pageConfig.name}',
+      builder: (context, state) {
+        return SignInScreen();
+      },
+    ),
     GoRoute(
       name: SettingsPage.pageConfig.name,
       path: '$_basePath/${SettingsPage.pageConfig.name}',
@@ -34,7 +42,7 @@ final routes = GoRouter(
         GoRoute(
           name: HomePage.pageConfig.name,
           path: '$_basePath/:tab',
-          builder: (context, state) => HomePage(
+          builder: (context, state) => HomePageProvider(
             key: state.pageKey,
             tab: state.pathParameters['tab']!,
           ),
@@ -88,8 +96,8 @@ final routes = GoRouter(
           ),
           body: SafeArea(
             child: CreateToDoEntryPageProvider(
+              toDoEntryItemAddedCallback: castedExtras.toDoEntryItemAddedCallback,
               collectionId: castedExtras.collectionId,
-              toDoEntryItemAddedCallBack: castedExtras.toDoEntryItemAddedCallBack,
             ),
           ),
         );

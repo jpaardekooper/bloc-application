@@ -1,10 +1,10 @@
-import 'package:bloc_to_do_app/1_domain/entities/unique_id.dart';
 import 'package:equatable/equatable.dart';
+import 'package:bloc_to_do_app/1_domain/entities/unique_id.dart';
 
 class ToDoEntry extends Equatable {
-  final EntryId id;
   final String description;
   final bool isDone;
+  final EntryId id;
 
   const ToDoEntry({
     required this.id,
@@ -20,7 +20,10 @@ class ToDoEntry extends Equatable {
     );
   }
 
-  ToDoEntry copyWith({String? description, bool? isDone}) {
+  ToDoEntry copyWith({
+    String? description,
+    bool? isDone,
+  }) {
     return ToDoEntry(
       id: id,
       description: description ?? this.description,
